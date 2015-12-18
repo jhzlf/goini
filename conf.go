@@ -23,11 +23,17 @@ type Config struct {
 }
 
 //Create an empty configuration file
-func SetConfig(filepath string) *Config {
+func SetConfig(filepath string) (*Config, error) {
 	c := new(Config)
 	c.filepath = filepath
 
-	return c
+	file, err := os.Open(c.filepath)
+	if err != nil {
+		CheckErr(err)
+		return nil, err
+	}
+	defer file.Close()
+	return c, nil
 }
 
 //To obtain corresponding value of the key values
